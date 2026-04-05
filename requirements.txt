@@ -1,0 +1,5 @@
+streamlit
+pdfplumber
+PyMuPDF
+requests
+google-generativeai
