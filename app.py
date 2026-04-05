@@ -12,10 +12,13 @@ genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 # ------------------ JSON CLEANING FUNCTION ------------------
 def clean_json_response(response_text):
     try:
+        # Remove markdown formatting
         if "```" in response_text:
             response_text = response_text.split("```")[1]
 
+        # Remove 'json' keyword
         response_text = response_text.replace("json", "").strip()
+
         return json.loads(response_text)
 
     except Exception:
@@ -28,14 +31,30 @@ def extract_structured_data(text, query):
 
     prompt = f"""
     You are an intelligent document analyst.
-
-    Understand the user question:
+    
+    STRICT INSTRUCTIONS:
+    
+    1. Understand the user question:
     "{query}"
-
-    Extract ONLY the relevant data needed.
-
+    
+    2. Extract ONLY the data needed to answer this question.
+    3. DO NOT extract all fields from the document.
+    4. DO NOT return unnecessary information.
+    
+    5. If question is about invoice amount:
+       - Return only invoice_amount (number only, no ₹, no commas)
+       - Also return status ("High" or "Normal")
+    
+    6. Convert all numeric values to pure numbers.
+    
     Return ONLY valid JSON.
-
+    
+    Example:
+    {{
+      "invoice_amount": 120000,
+      "status": "High"
+    }}
+    
     Document:
     {text[:12000]}
     """
@@ -54,6 +73,7 @@ def extract_text(file):
     elif file.type == "application/pdf":
         text = ""
 
+        # Try pdfplumber
         try:
             file.seek(0)
             with pdfplumber.open(file) as pdf:
@@ -62,6 +82,7 @@ def extract_text(file):
         except:
             pass
 
+        # Fallback: PyMuPDF
         if not text.strip():
             file.seek(0)
             doc = fitz.open(stream=file.read(), filetype="pdf")
@@ -83,6 +104,7 @@ query = st.text_input("Ask a question about the document")
 # ------------------ MAIN FLOW ------------------
 if uploaded_file:
 
+    # Cache extracted text
     if "document_text" not in st.session_state:
         st.session_state.document_text = extract_text(uploaded_file)
 
@@ -124,18 +146,7 @@ if uploaded_file:
                     st.success("Request sent to n8n ✅")
 
                     try:
-                        result = response.json()
-
-                        # ✅ Final Output Sections
-                        st.subheader("🧠 Final Analytical Answer")
-                        st.write(result.get("final_answer", "No answer"))
-
-                        st.subheader("📧 Generated Email Body")
-                        st.markdown(result.get("email_body", "No email content"), unsafe_allow_html=True)
-
-                        st.subheader("📊 Email Automation Status")
-                        st.success(result.get("status", "Unknown"))
-
+                        st.json(response.json())
                     except:
                         st.write(response.text)
 
