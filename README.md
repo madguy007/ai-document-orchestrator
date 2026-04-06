@@ -25,7 +25,7 @@ This project demonstrates how to combine:
 ## 🔄 n8n Workflow
 
 <p align="center">
-  <img src="images/n8n_workflow.jpg" width="800"/>
+  <img src="Images/n8n_workflow.jpg" width="800"/>
   <br/>
   <em>Automated workflow handling risk detection and email alerts</em>
 </p>
