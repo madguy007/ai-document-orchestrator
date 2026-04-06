@@ -22,6 +22,16 @@ This project demonstrates how to combine:
 
 ---
 
+## 🔄 n8n Workflow
+
+<p align="center">
+  <img src="images/n8n_workflow.png.jpg" width="800"/>
+  <br/>
+  <em>Automated workflow handling risk detection and email alerts</em>
+</p>
+
+---
+
 ## ⚙️ Features
 
 * 📂 Upload PDF/TXT documents
@@ -67,24 +77,23 @@ This project demonstrates how to combine:
 ---
 
 ## 🔄 System Architecture
-
 ```
 User Input (Streamlit UI)
-        ↓
+↓
 Text Extraction (PDF/TXT)
-        ↓
+↓
 Gemini API (Structured Data Extraction)
-        ↓
+↓
 User Trigger (Send Email)
-        ↓
+↓
 n8n Webhook
-        ↓
+↓
 IF Condition (Risk Check)
-   ↓            ↓
-TRUE         FALSE
-   ↓            ↓
-Email Sent   No Action
-        ↓
+↓ ↓
+TRUE FALSE
+↓ ↓
+Email Sent No Action
+↓
 Response to Streamlit UI
 ```
 
@@ -135,7 +144,7 @@ Response to Streamlit UI
 
 ## 🙌 Author
 
-**Madan Dahiphale**
+**Madan Dahiphale**  
 [LinkedIn](https://www.linkedin.com/in/madandahiphale)
 
 ---
