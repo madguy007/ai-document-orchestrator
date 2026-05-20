@@ -148,7 +148,3 @@ Response to Streamlit UI
 [LinkedIn](https://www.linkedin.com/in/madandahiphale)
 
 ---
-
-## ⭐ If you like this project
-
-Give it a ⭐ on GitHub!
